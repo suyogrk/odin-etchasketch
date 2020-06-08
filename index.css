@@ -15,7 +15,23 @@ background: gray;
     place-items: center center;
 }
 
+#etchasketch-container{
+    display:grid;
+    grid:
+    'controls' max-content
+    'etchasketch' max-content
+    /max-content;
+    place-items: center center;
+
+}
+.controls {
+    width: 100%;
+    
+
+}
+
 #etchasketch{
+    grid-area:etchasketch;
     background: rgba(255,255,255);
     width:800px;
     height: 800px;

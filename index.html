@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Etch-A-sketch</title>
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
 
     <div class="container">
-        <div id="etchasketch">
+        <div id="etchasketchcontainer">
+            <div class="controls">
+                <button id="clearButton">Clear</button>
+            </div>
+            <div id="etchasketch">
 
+            </div>
         </div>
+
 
     </div>
 
@@ -20,19 +28,19 @@
         const etchasketch = document.getElementById('etchasketch');
 
         let totalPixels = Math.pow(length, 2);
-        etchasketch.style.gridTemplateColumns=`repeat(${length}, 1fr)`;
+        etchasketch.style.gridTemplateColumns = `repeat(${length}, 1fr)`;
 
-        for(let i=0;i<totalPixels;i++){
+        for (let i = 0; i < totalPixels; i++) {
 
             etchasketch.innerHTML += `<div class="pixel" data-id=${i}></div>`
         }
 
-        function changeColor(e){
-                this.style.background = "red";
+        function changeColor(e) {
+            this.style.background = "red";
         }
 
-        const pixels = document.querySelectorAll('.pixel');    
-        pixels.forEach(pixel=> pixel.addEventListener('mouseover',changeColor) );
+        const pixels = document.querySelectorAll('.pixel');
+        pixels.forEach(pixel => pixel.addEventListener('mouseover', changeColor));
 
 
 
@@ -42,6 +50,7 @@
 
 
     </script>
-    
+
 </body>
+
 </html>
