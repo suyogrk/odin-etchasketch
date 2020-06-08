@@ -9,48 +9,107 @@
 </head>
 
 <body>
-
     <div class="container">
+        <h1>Etch-a-sketch</h1>
         <div id="etchasketchcontainer">
             <div class="controls">
-                <button id="clearButton">Clear</button>
+                <label for="gridSize">Grid Size: </label>
+                <input type="number" name="gridSize" id="gridSize" placeholder="16" />
+                <button id="resetButton">Reset</button>
             </div>
             <div id="etchasketch">
-
+            </div>
+            <div class="options">
+                <span>Color Choice:</span>
+                <input id="colorBlackWhite" type="radio" name="colorChoice" value="blackwhite" checked>
+                <label for="colorBlackWhite">Black and White</label>
+                <input id='colorRandom' type="radio" name="colorChoice" value="random">
+                <label for="colorRandom">Random Color</label>
             </div>
         </div>
-
-
     </div>
 
     <script>
         let length = 16;
+        let colorMode = 'blackwhite';
         const etchasketch = document.getElementById('etchasketch');
+        const resetButton = document.getElementById('resetButton');
+        const colorFields = document.querySelectorAll('input[name="colorChoice"]');
 
-        let totalPixels = Math.pow(length, 2);
-        etchasketch.style.gridTemplateColumns = `repeat(${length}, 1fr)`;
+        colorFields.forEach(btn => btn.addEventListener('click', changeColorMode));
 
-        for (let i = 0; i < totalPixels; i++) {
 
-            etchasketch.innerHTML += `<div class="pixel" data-id=${i}></div>`
+        resetButton.addEventListener('click', changeGrid);
+        let pixels = [];
+
+        function changeColorMode(e) {
+            switch (this.value) {
+                case 'random':
+                    colorMode = 'random'
+                    break;
+                case 'blackwhite':
+                    colorMode = 'blackwhite'
+                    break;
+                default:
+                    colorMode = 'blackwhite'
+                    break;
+            }
+        }
+
+        function changeGrid(e) {
+            const gridSize = document.getElementById('gridSize').value;
+            if (gridSize === '') {
+                length = 16;
+            } else {
+                length = parseInt(gridSize);
+            }
+
+            setGrid(length);
+            setListenersForGrid();
+        }
+
+        function setListenersForGrid() {
+            pixels = document.querySelectorAll('.pixel');
+            pixels.forEach(pixel => pixel.addEventListener('mouseover', changeColor));
+
+        }
+
+        function setGrid(length) {
+            etchasketch.innerHTML = '';
+            let totalPixels = Math.pow(length, 2);
+            etchasketch.style.gridTemplateColumns = `repeat(${length}, 1fr)`;
+            for (let i = 0; i < totalPixels; i++) {
+                etchasketch.innerHTML += `<div class="pixel" data-id=${i} data-opacity="0"></div>`
+            }
         }
 
         function changeColor(e) {
-            this.style.background = "red";
+            switch (colorMode) {
+
+                case 'blackwhite':
+                    let opacity = parseFloat(this.dataset.opacity);
+                    opacity += 0.1;
+                    this.style.opacity = opacity;
+                    this.dataset.opacity = opacity;
+                    this.style.background = "black";
+                    break;
+                case 'random':
+                    const r = Math.floor(Math.random()* 256);
+                    const g = Math.floor(Math.random() * 256);
+                    const b = Math.floor(Math.random() * 256);
+                    const a = Math.random();
+
+                    this.style.background=`rgb(${r},${g},${b})`;
+                    this.style.opacity='1';
+            }
+
         }
 
-        const pixels = document.querySelectorAll('.pixel');
-        pixels.forEach(pixel => pixel.addEventListener('mouseover', changeColor));
-
-
-
-
-
-
+        setGrid(length);
+        setListenersForGrid();
 
 
     </script>
-
 </body>
 
 </html>
